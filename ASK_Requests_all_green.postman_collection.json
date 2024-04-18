@@ -1,0 +1,828 @@
+{
+	"info": {
+		"_postman_id": "fac2badb-0bde-4b22-bfe5-c6841f39eb16",
+		"name": "ASK_Requests_all_green",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31767724",
+		"_collection_link": "https://www.postman.com/grey-desert-136684/workspace/mar24/collection/31767724-fac2badb-0bde-4b22-bfe5-c6841f39eb16?action=share&source=collection_link&creator=31767724"
+	},
+	"item": [
+		{
+			"name": "/sign-in-[T]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"teacherToken\",jsonData.token);",
+							"pm.test(\"status is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{teacherToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\":\"ask_instr@aol.com\",\n  \"password\": \"ABC123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ask-qa.portnov.com/api/v1/sign-in",
+					"protocol": "http",
+					"host": [
+						"ask-qa",
+						"portnov",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"sign-in"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_all_quizzes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"pm.test(\"status code is 200\", function (){",
+							"    pm.response.to.have.status(200);",
+							"    ",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{teacherToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/quizzes/",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"quizzes",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/quiz-[T][Createquiz]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var quizId=pm.response.json().id;",
+							"pm.environment.set(\"quizId\",quizId)",
+							"pm.test(\"Status is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{teacherToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Gero's quiz 041024\",\n  \"totalScore\": 18,\n  \"passingPercentage\": 75,\n  \"showStopperQuestion\": 1,\n  \"questions\": [\n    {\n      \"type\": \"TEXTUAL\",\n      \"question\": \"What is your name?\",\n      \"score\": 5\n    },\n    {\n      \"type\": \"SINGLE_CHOICE\",\n      \"question\": \"Which city is city largest in California?\",\n      \"score\": 7,\n      \"answer\": 2,\n      \"hasOtherOption\": false,\n      \"options\": [\n        \"San Francisco\",\n        \"Sacramento\",\n        \"Los Angeles\",\n        \"Redding\"\n      ]\n    },\n    {\n      \"type\": \"MULTIPLE_CHOICE\",\n      \"question\": \"Who was apple founded by?\",\n      \"score\": 6,\n      \"answers\": [\n        0,\n        1,\n        2\n      ],\n      \"hasOtherOption\": true,\n      \"options\": [\n        \"Steve Jobs\",\n        \"Steve Wozniak\",\n        \"Ronald Wayne\",\n        \"Ronald Reagan\"\n      ]\n    }\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ask-qa.portnov.com/api/v1/quiz",
+					"protocol": "http",
+					"host": [
+						"ask-qa",
+						"portnov",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"quiz"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/quiz-[T][Updatequiz]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{teacherToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Gero's quiz 041024\",\n  \"totalScore\": 12,\n  \"passingPercentage\": 70,\n  \"showStopperQuestion\": 1,\n  \"questions\": [\n    {\n      \"type\": \"TEXTUAL\",\n      \"question\": \"What is your name?\",\n      \"score\": 5\n    },\n    {\n      \"type\": \"SINGLE_CHOICE\",\n      \"question\": \"Which city is city largest in California?\",\n      \"score\": 7,\n      \"answer\": 2,\n      \"hasOtherOption\": false,\n      \"options\": [\n        \"San Francisco\",\n        \"Sacramento\",\n        \"Los Angeles\",\n        \"Redding\"\n      ]\n    },\n    {\n      \"type\": \"MULTIPLE_CHOICE\",\n      \"question\": \"Who was apple founded by?\",\n      \"score\": 6,\n      \"answers\": [\n        0,\n        1,\n        2\n      ],\n      \"hasOtherOption\": true,\n      \"options\": [\n        \"Steve Jobs\",\n        \"Steve Wozniak\",\n        \"Ronald Wayne\",\n        \"Ronald Reagan\"\n      ]\n    }\n  ],\n  \"id\":{{quizId}}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/quiz/",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"quiz",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/quiz/id [Delete]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{teacherToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ask-qa.portnov.com/api/v1/quiz/{{quizId}}",
+					"protocol": "http",
+					"host": [
+						"ask-qa",
+						"portnov",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"quiz",
+						"{{quizId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/users-get-all-users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status ok\", function(){",
+							"    pm.response.to.have.status(200);",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{teacherToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/users",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/users/change-name/id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status ok\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{teacherToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"van dam jean\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/users/change-name/12747",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"users",
+						"change-name",
+						"12747"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "users/change-group/id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status ok\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"    ",
+							"",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{teacherToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"group\": \"golteti\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/users/change-group/12747",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"users",
+						"change-group",
+						"12747"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "users/change-role/12747",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status ok\", function (){",
+							"    pm.response.to.have.status(\"OK\")});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{teacherToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"role\":\"Teacher\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/users/change-role/12747",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"users",
+						"change-role",
+						"12747"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "settings/change-name[change_my_name]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status ok\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{teacherToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"newName\": \"Galina Teacher\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/settings/change-name",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"settings",
+						"change-name"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/settings/change-password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Ok\", function(){",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{teacherToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"password\": \"ABC123\",\n  \"newPassword\": \"ABC123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/settings/change-password",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"settings",
+						"change-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/assignments-get-all-assignments",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 200\", function(){",
+							"    pm.response.to.have.status(200);",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{teacherToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/assignments",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"assignments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/assignment-create-new-assignment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 200\", function(){",
+							"    pm.response.to.have.status(200)});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{teacherToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"quizId\": 8733,\n  \"userIds\": [12758]\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/assignment",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"assignment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/sign-in-[S]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"studentToken\",jsonData.token);",
+							"pm.test(\"status is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\":\"nika@test.com\",\n  \"password\": \"Luka2009\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ask-qa.portnov.com/api/v1/sign-in",
+					"protocol": "http",
+					"host": [
+						"ask-qa",
+						"portnov",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"sign-in"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/my-assignments[S]all-assignments",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status ok\",function(){",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{studentToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/my-assignments",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"my-assignments"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
